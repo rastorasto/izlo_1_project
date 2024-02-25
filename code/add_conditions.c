@@ -2,7 +2,7 @@
 #include "cnf.h"
 
 //
-// LOGIN: <ZDE VLOZTE SVUJ LOGIN>
+// LOGIN: <xuhliar00>
 //
 
 // Tato funkce by mela do formule pridat klauzule predstavujici podminku 1)
@@ -18,10 +18,10 @@ void at_least_one_valid_street_for_each_step(CNF* formula, unsigned num_of_cross
     assert(streets != NULL);
 
     // ZDE PRIDAT KOD
-    for(unsigned i = 0; i < num_of_streets; i++) {
-        Clause* clause = create_new_clause(formula);
-        for(unsigned j = 0; j < num_of_crossroads; j++) {
-            add_literal_to_clause(clause, true, i, streets[j].crossroad_to, streets[j].crossroad_from);
+    for(int ulica = 0; ulica < num_of_streets; ulica++) {
+        Clause* klauzura = create_new_clause(formula);
+        for(int dalsia_ulica = 0; dalsia_ulica < num_of_streets; dalsia_ulica++) {
+            add_literal_to_clause(klauzura, true, ulica, streets[dalsia_ulica].crossroad_from, streets[dalsia_ulica].crossroad_to);
         }
     }
 }
@@ -35,6 +35,22 @@ void at_most_one_street_for_each_step(CNF* formula, unsigned num_of_crossroads, 
     assert(num_of_streets > 0);
 
     // ZDE PRIDAT KOD
+    for (int i = 0; i < num_of_streets; i++) {
+        for(int j = 0; j < num_of_crossroads; j++) {
+            for (int k = 0; k < num_of_crossroads; k++) {
+                for(int l = 0; l < num_of_crossroads; l++){
+                    for(int m = 0; m < num_of_crossroads; m++){
+                        if(j == l && k == m){
+                            continue;
+                        }
+                        Clause* klauzura = create_new_clause(formula);
+                        add_literal_to_clause(klauzura, false, i, j, k);
+                        add_literal_to_clause(klauzura, false, i, l, m);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Tato funkce by mela do formule pridat klauzule predstavujici podminku 3)
@@ -46,6 +62,17 @@ void streets_connected(CNF* formula, unsigned num_of_crossroads, unsigned num_of
     assert(num_of_streets > 0);
 
     // ZDE PRIDAT KOD
+    for(int ulica = 0; ulica < num_of_streets; ulica++){
+        for(int zaciatok_krizovatky = 0; zaciatok_krizovatky < num_of_crossroads; zaciatok_krizovatky++){
+            for(int koniec_krizovatky = 0; koniec_krizovatky < num_of_crossroads; koniec_krizovatky++){
+                Clause* klauzura = create_new_clause(formula);
+                add_literal_to_clause(klauzura, false, ulica, zaciatok_krizovatky, koniec_krizovatky);
+                for(int krizovatka_2 = 0; krizovatka_2 < num_of_crossroads; krizovatka_2++){
+                    add_literal_to_clause(klauzura, true, ulica+1, koniec_krizovatky, krizovatka_2);
+                }
+            }
+        }
+    }
 }
 
 // Tato funkce by mela do formule pridat klauzule predstavujici podminku 4)
