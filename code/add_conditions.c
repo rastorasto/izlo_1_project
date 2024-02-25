@@ -35,7 +35,7 @@ void at_most_one_street_for_each_step(CNF* formula, unsigned num_of_crossroads, 
     assert(num_of_streets > 0);
 
     // ZDE PRIDAT KOD
-    for (int i = 0; i < num_of_streets; i++) {
+    for (int krok = 0; krok < num_of_streets; krok++) {
         for(int j = 0; j < num_of_crossroads; j++) {
             for (int k = 0; k < num_of_crossroads; k++) {
                 for(int l = 0; l < num_of_crossroads; l++){
@@ -44,8 +44,8 @@ void at_most_one_street_for_each_step(CNF* formula, unsigned num_of_crossroads, 
                             continue;
                         }
                         Clause* klauzura = create_new_clause(formula);
-                        add_literal_to_clause(klauzura, false, i, j, k);
-                        add_literal_to_clause(klauzura, false, i, l, m);
+                        add_literal_to_clause(klauzura, false, krok, j, k);
+                        add_literal_to_clause(klauzura, false, krok, l, m);
                     }
                 }
             }
